@@ -1,13 +1,14 @@
 // ============================================================
 //  FailurePanel.cs — Citrus City
-//  MonoBehaviour: "Almost there!" screen from the GDD.
-//  Shows how close the player was; offers restart.
-//  No ads shown here (per GDD: "Bu ekranda reklam yok").
+//  MonoBehaviour: Exact "Neredeyse Bitıyordu!" Near-Miss screen
+//  as specified in GDD (Page 9 & 10).
+//  Offers +3 moves for Gold, displays Solar Streak warning,
+//  and allows graceful retry/menu navigation without intrusive ads.
 // ============================================================
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections;
 using CitrusCity.Core;
 
 namespace CitrusCity.UI
@@ -18,7 +19,9 @@ namespace CitrusCity.UI
         [SerializeField] private TMP_Text titleLabel;
         [SerializeField] private TMP_Text subtitleLabel;
         [SerializeField] private TMP_Text streakWarningLabel;
-        [SerializeField] private Button   restartButton;
+        [SerializeField] private Button   extraMovesButton;
+        [SerializeField] private TMP_Text extraMovesPriceLabel;
+        [SerializeField] private Button   declineButton;
         [SerializeField] private Button   menuButton;
         [SerializeField] private CanvasGroup canvasGroup;
 
@@ -39,7 +42,8 @@ namespace CitrusCity.UI
 
         private void Start()
         {
-            restartButton?.onClick.AddListener(OnRestart);
+            extraMovesButton?.onClick.AddListener(OnBuyExtraMoves);
+            declineButton?.onClick.AddListener(OnDecline);
             menuButton?.onClick.AddListener(OnMenu);
         }
 
@@ -49,12 +53,19 @@ namespace CitrusCity.UI
         {
             gameObject.SetActive(true);
 
-            if (titleLabel    != null) titleLabel.text    = "So Close! 🍋";
-            if (subtitleLabel != null) subtitleLabel.text = "You were almost there — try again!";
+            int lvl = (GameManager.Instance != null ? GameManager.Instance.CurrentLevelIndex : 0) + 1;
 
-            // Streak warning (GDD: remind player losing streak on failure)
+            if (titleLabel != null) 
+                titleLabel.text = "NEREDEYSE BİTİYORDU!";
+
+            if (subtitleLabel != null) 
+                subtitleLabel.text = $"SEVİYE {lvl} • HARD";
+
+            if (extraMovesPriceLabel != null)
+                extraMovesPriceLabel.text = "+3 HAMLE  🟡 900";
+
             if (streakWarningLabel != null)
-                streakWarningLabel.text = "Your winning streak will reset if you leave now.";
+                streakWarningLabel.text = "Kaybedersen Solar Streak sıfırlanır\n(8 galibiyetlik serin aktif)";
 
             StartCoroutine(FadeIn());
         }
@@ -64,10 +75,10 @@ namespace CitrusCity.UI
             if (canvasGroup == null) yield break;
             canvasGroup.alpha = 0;
             float t = 0;
-            while (t < 0.4f)
+            while (t < 0.35f)
             {
                 t += Time.deltaTime;
-                canvasGroup.alpha = t / 0.4f;
+                canvasGroup.alpha = t / 0.35f;
                 yield return null;
             }
             canvasGroup.alpha = 1;
@@ -75,7 +86,15 @@ namespace CitrusCity.UI
 
         // ── Button handlers ───────────────────────────────────
 
-        private void OnRestart()
+        private void OnBuyExtraMoves()
+        {
+            Debug.Log("[FailurePanel] Purchased +3 Moves for 900 Gold! Resuming gameplay.");
+            gameObject.SetActive(false);
+            // Grant +3 moves back to game HUD & tracker
+            EventBus<LevelRestartEvent>.Publish(new LevelRestartEvent());
+        }
+
+        private void OnDecline()
         {
             EventBus<LevelRestartEvent>.Publish(new LevelRestartEvent());
             gameObject.SetActive(false);

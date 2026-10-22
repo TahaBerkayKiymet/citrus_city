@@ -1,155 +1,62 @@
 # Citrus City — Unity 6 Prototype
-## Playable Demo: Magnetic Tap Puzzle
+## Playable Demo: Magnetic Tap Puzzle & Mediterranean Town
+
+Tasarım dokümanındaki (GDD) Akdeniz teması, Magnetic Tap çekirdek mekaniği, kasaba restorasyonu ve tüm ekran konseptlerine uygun olarak hazırlanmış Unity 6 prototipi.
 
 ---
 
-## Quick Start
+## 🚀 Hızlı Başlangıç (Quick Start)
 
-### 1. Requirements
-- Unity Hub (latest)
+### 1. Gereksinimler
+- Unity Hub (En güncel)
 - Unity Editor **6000.0.x LTS** (Unity 6 LTS)
-- Xcode 15+ for iOS builds
-- Android SDK API 34 for Android builds
+- iOS için Xcode 15+, Android için Android SDK API 34
 
-### 2. Open the Project
-1. Open Unity Hub → Add → Add project from disk
-2. Navigate to the `CitrusCity/` folder → Open
-3. When prompted, choose **Unity 6 LTS**
-4. Wait for package import (~5 minutes first time for URP)
+### 2. Projeyi Açma
+1. Unity Hub → **Add** → **Add project from disk**
+2. `citrus_city/CitrusCity/` klasörünü seçin → **Open**
+3. Editör açıldığında paketlerin yüklenmesini bekleyin.
 
 ---
 
-## Scene Setup (One-Time, Required)
+## 🎬 PDF Tasarımına Uygun Sahneleri Oluşturma (Tek Tıkla Kurulum)
 
-After the project opens and compiles:
+Projede `SceneBootstrap` editör aracı bulunmaktadır. Sahneleri oluşturmak için:
 
-### Create MainMenu Scene
-1. File → New Scene → Empty → Save as `Assets/Scenes/MainMenu.unity`
-2. Top menu: **CitrusCity → Setup → Create MainMenu Objects**
-3. Save scene
+### 1. MainMenu (Ana Ekran & Kasaba Manzarası — PDF Sayfa 6)
+1. Unity'de: `File → New Scene → Empty` → `Assets/Scenes/MainMenu.unity` olarak kaydedin.
+2. Üst menü: **`CitrusCity → Setup → Create Complete MainMenu (PDF Design)`**
+3. Sahneyi kaydedin (`Cmd + S`).
+   - *İçerik*: Limonata Kafe & Akdeniz kasabası arka planı, penceredeki kadın kafe sahibi avatarı, Can/Altın/Limon barları, Solar Streak rozeti (8/8 Aktif), Etkinlik Sandığı, Limonata Festivali, Web Shop (%10 Bonus), Havuz Onarım pini ve `▶ BÖLÜM 47 (ZOR)` butonu.
 
-### Create GameScene
-1. File → New Scene → Empty → Save as `Assets/Scenes/GameScene.unity`
-2. Top menu: **CitrusCity → Setup → Create GameScene Objects**
-3. Save scene
+### 2. GameScene (Oyun Ekranı — PDF Sayfa 8)
+1. Unity'de: `File → New Scene → Empty` → `Assets/Scenes/GameScene.unity` olarak kaydedin.
+2. Üst menü: **`CitrusCity → Setup → Create Complete GameScene (PDF Design)`**
+3. Sahneyi kaydedin (`Cmd + S`).
+   - *İçerik*: Teras manzarası arka planı, ahşap tepsi tahtası, hücre zemin karoları, üst HUD (Avatar, Hedefler, Hamle sayacı), **Aurora Festivali Barı** (Sunlight Surge şarj barı), alt **Booster Bar** (Çekiç, Sopa, Sepet, Mikser), "Neredeyse Bitıyordu!" popup'ı ve Zafer paneli.
 
-*(Note: `Level_01`, `Level_02`, `Level_03` and all `FruitData` assets have already been pre-generated in `Assets/Resources/Levels/` and `Assets/Resources/FruitData/`, so `LevelLoader` links them automatically!)*
-
-### Assets & Models Included
-- **High-Res 3D Stylized Sprites**: Transparent PNGs in `Assets/Sprites/Fruits/` (Orange, Lemon, Lime, Cherry, Grape) and `Assets/Sprites/Boosters/` (Rocket, Bomb, Vortex, Arrows).
-- **3D Mesh Models (.obj + .mtl)**: Ready in `Assets/Models/` (Orange, Lemon, Lime, Cherry, Grape, Bomb, Rocket).
-- **Board & UI**: Glass board cell tiles in `Assets/Sprites/Board/Board_Tile.png` and UI icons in `Assets/Sprites/UI/`.
-- **Preconfigured ScriptableObjects**: Ready in `Assets/Resources/FruitData/` and `Assets/Resources/Levels/`.
-
-### Add to Build Settings
-File → Build Settings → Add Open Scenes for both (MainMenu=0, GameScene=1)
+### 3. TownMapScene (Kasaba Haritası & Hikâye — PDF Sayfa 5)
+1. Unity'de: `File → New Scene → Empty` → `Assets/Scenes/TownMapScene.unity` olarak kaydedin.
+2. Üst menü: **`CitrusCity → Setup → Create TownMap Scene (PDF Design)`**
+3. Sahneyi kaydedin (`Cmd + S`).
+   - *İçerik*: "Şehir neden terk edildi?" 6 bölgeli ilerleme haritası (Limonata Kafe, Marina, Zeytinlik, Çarşı, Fener, Eski Konak) ve karakter diyalog kutusu.
 
 ---
 
-## Running in the Editor
+## 📦 Projeye Dahil Edilen Asset'ler & Modeller
 
-1. Open GameScene
-2. Press Play
-3. Use mouse (mouse = finger)
-
-| Action | Mouse |
-|--------|-------|
-| Select group | Click |
-| Preview booster | Hold + move |
-| Confirm | Release inside group |
-| Cancel | Drag outside, release |
-| Tap booster | Click booster cell |
-
----
-
-## Tests (No Play Mode)
-
-CitrusCity → Board Debug Window → Run Logic Tests
-All 7 tests should show PASS.
-
----
-
-## Gameplay: Magnetic Tap
-
-### Boosters
-| Size | Booster | Effect |
-|------|---------|--------|
-| 5-6  | Rocket  | Row or column |
-| 7-8  | Bomb    | 3×3 area |
-| 9+   | Vortex  | All of one color |
-
-### Direction Rule
-Touch the left/right edge of the group → Horizontal rocket
-Touch the top/bottom edge → Vertical rocket
-
-### Combos
-- Rocket + Rocket → row AND column
-- Rocket + Bomb → 5×5 blast
-- Bomb + Bomb → 5×5 blast
-- Bomb + Vortex → color becomes bombs
-- Vortex + Vortex → clear entire board
-
----
-
-## Building
-
-### iOS
-1. Build Settings → iOS → Switch Platform
-2. Build → opens Xcode
-3. Set Development Team → Run
-
-### Android
-1. Build Settings → Android → Switch Platform
-2. Player Settings → IL2CPP, ARM64, minAPI=24
-3. Build → install APK
-
-Bundle ID: com.citruscity.prototype
-
----
-
-## Architecture
-
-```
-Scripts/
-├── Core/       GameManager, EventBus, Constants, ProceduralSprites
-├── Board/      BoardState*, GravitySystem*, BoardController, BoardConfig
-├── Fruit/      FruitType, FruitData, FruitView, FruitViewPool
-├── Selection/  GroupFinder*, SelectionState*, SelectionController
-├── Boosters/   BoosterType, BoosterFactory*, BoosterEffect*, BoosterCombo*, BoosterPreviewView
-├── Objectives/ ObjectiveTracker*
-├── Levels/     LevelData, LevelLoader
-├── UI/         GameHUD, ObjectiveView, VictoryPanel, FailurePanel, MainMenuUI
-├── Effects/    FruitExplosionFX, BoosterActivateFX
-└── Editor/     BoardEditorWindow, SceneBootstrap
-```
-*Pure C# — no Unity dependencies, fully unit-testable
-
----
-
-## Acceptance Criteria
-
-- [ ] AC-01: 8×9 grid with 5 fruit colors
-- [ ] AC-02: Click highlights group with bounce
-- [ ] AC-03: Booster preview + arrow appears while held
-- [ ] AC-04: Drag outside group = cancel (no move consumed)
-- [ ] AC-05: Release inside = remove fruits, spawn booster
-- [ ] AC-06: Fruits fall with smooth animation
-- [ ] AC-07: Booster tap = flash + particle effect
-- [ ] AC-08: Rocket clears row or column
-- [ ] AC-09: Bomb clears 3×3
-- [ ] AC-10: Vortex clears all of one color
-- [ ] AC-11: Vortex+Vortex clears entire board
-- [ ] AC-12: Move counter decrements per move
-- [ ] AC-13: Objectives tracked correctly
-- [ ] AC-14: Victory panel on completion
-- [ ] AC-15: Failure panel when moves run out
-- [ ] AC-16: Restart reloads level
-
----
-
-## Known Limitations (Prototype Scope)
-- Dynamic Re-Tap: not implemented
-- Aurora Festival bar: not implemented  
-- Audio: not implemented
-- Economy/monetization: intentionally excluded
-- Custom art: procedural sprites used
+1. **Meyve & Engel Sprite'ları** (`Assets/Sprites/Fruits/` & `Assets/Sprites/Obstacles/`):
+   - `Fruit_Orange.png`, `Fruit_Lemon.png`, `Fruit_Lime.png`, `Fruit_Cherry.png`, `Fruit_Grape.png`, `Fruit_Strawberry.png`
+   - `Obstacle_Crate.png` (Tahta sandık engeli)
+2. **Booster Sprite'ları** (`Assets/Sprites/Boosters/`):
+   - `Booster_Rocket.png`, `Booster_Rocket_H.png`, `Booster_Rocket_V.png`
+   - `Booster_Bomb.png`, `Booster_Vortex.png`
+   - Seviye içi güçlendiriciler: `InGame_Booster_Hammer.png`, `InGame_Booster_Bat.png`, `InGame_Booster_Basket.png`, `InGame_Booster_Mixer.png`
+3. **Arka Planlar & UI** (`Assets/Sprites/Backgrounds/` & `Assets/Sprites/UI/`):
+   - `Bg_Town_MainMenu.png`, `Bg_Game_Terrace.png`, `Bg_Town_Map.png`, `Bg_Title_Banner.png`
+   - `UI_Avatar_Window.png`, `Event_Solar_Streak.png`, `Event_Festival.png`, `Event_Chest.png`, `Event_Web_Shop.png`, `Event_Magic_Wand.png`
+   - `Board_Tile.png` (Hücre zemin karoları)
+4. **3D Mesh Modelleri** (`Assets/Models/`):
+   - `Orange.obj`, `Lemon.obj`, `Lime.obj`, `Cherry.obj`, `Grape.obj`, `Bomb.obj`, `Rocket.obj`
+5. **Hazır Seviyeler & Veriler** (`Assets/Resources/FruitData/` & `Assets/Resources/Levels/`):
+   - `Level_01.asset`, `Level_02.asset`, `Level_03.asset` (Objective ve hamle sayıları önceden ayarlı).
